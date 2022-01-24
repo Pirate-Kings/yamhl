@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Terminal</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="prism.css" />
+    <style type="text/css">
+        div pre code {
+            background-color: #232627;
+            color: white;
+            display: block;
+            padding: 5px;
+            inline-size: 1000px;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+        div {
+            background-color: #232627;
+            inline-size: 1000px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div id="prereq"><pre><code><span style="font-weight:1000">Linux(Arch) - Fish</span>
+
+<span style="color:#1cdc9a;">whi~nyaan</span>@blackspace<span style="color:#11d116;"> ~</span>> <span style="color:#00afff;"><span style="color:#005fd7;">python</span> --version</span>
+Python 3.9.6
+<span style="color:#1cdc9a;">whi~nyaan</span>@blackspace<span style="color:#11d116;"> ~</span>> <span style="color:#00afff;"><span style="color:#005fd7;">pip</span> --version</span>
+pip 21.2.4 from /usr/lib/python3.9/site-packages/pip (python 3.9)
+<span style="color:#1cdc9a;">whi~nyaan</span>@blackspace<span style="color:#11d116;"> ~</span>> <span style="color:#00afff;"><span style="color:#005fd7;">git</span> --version</span>
+git version 2.33.0</code></pre></div>
+
+<div id="setup1"><pre><code><span style="font-weight:1000">Linux(Arch) - Fish</span>
+
+<span style="color:#1cdc9a;">whi~nyaan</span>@blackspace<span style="color:#11d116;"> ~</span>> <span style="color:#00afff;"><span style="color:#005fd7;">git</span> clone https://github.com/whitespace-negative/Test-Template.git
+                        <span style="color:#005fd7;">cd</span> Test-Template
+                        <span style="color:#005fd7;">python3</span> -m venv venv</span>
+Cloning into Test-Template...
+remote: Enumerating objects: 275, done.
+<span style="color:#C50F1F;">...</span>
+Resolving deltas: 100% (69/69), done.
+Creating the virtual environment...
+Done.</code></pre></div>
+
+<!-- HTML generated using https://hilite.me, modified by me(https://github.com/whitespace-negative) -->
+<div id="choco_install_1"><pre><code><span style="font-weight:1000">Windows(Win10) - Windows Powershell(Administrator)</span>
+
+PS C:\Windows\system32> <span style="color: #f9f1a5">Set-ExecutionPolicy</span> AllSigned
+Execution Policy Change
+The execution policy helps protect you from scripts that you do not trust. Changing the execution policy might expose
+you to the security risks described in the about_Execution_Policies help topic at
+https:/go.microsoft.com/fwlink/?LinkID=135170. Do you want to change the execution policy?
+[Y] Yes  [A] Yes to All  <span style="color:#f9f1a5;">[N] No</span>  [L] No to All  [S] Suspend  [?] Help (default is "N"): A</code></pre></div>
+
+<!-- HTML generated using https://hilite.me, modified by me(https://github.com/whitespace-negative) -->
+<div id="choco_install_2"><pre><code><span style="font-weight:1000">Windows(Win10) - Windows Powershell(Administrator)</span>
+
+PS C:\Windows\system32> <span style="color: #f9f1a5">Set-ExecutionPolicy</span> Bypass<span style="color:#767676;"> -Scope</span> <span style="color:#f9f1a5;">Process</span><span style="color:#767676;"> -Force</span><span style>;</span> <span style="color:#f9f1a5;">iex</span> ((<span style="color: #f9f1a5">New-Object</span> System.Net.WebClient).DownloadString(<span style="color: #3a96dd">'https://community.chocolatey.org/install.ps1'</span>))
+Forcing web requests to allow TLS v1.2 (Required for requests to Chocolatey.org)
+Getting latest version of the Chocolatey package for download.
+Not using proxy.
+Getting Chocolatey from https://community.chocolatey.org/api/v2/package/chocolatey/0.10.15.
+Downloading https://community.chocolatey.org/api/v2/package/chocolatey/0.10.15 to C:\Users\whi~nyaan\AppData\Local\Temp\chocolatey\chocoInstall\chocolatey.zip
+Not using proxy.
+Extracting C:\Users\whi~nyaan\AppData\Local\Temp\chocolatey\chocoInstall\chocolatey.zip to C:\Users\whi~nyaan\AppData\Local\Temp\chocolatey\chocoInstall
+Installing Chocolatey on the local machine
+<span style="color:#C50F1F;">...</span>
+Chocolatey (choco.exe) is now ready.
+You can call choco from anywhere, command line or powershell by typing choco.
+Run choco /? for a list of functions.
+You may need to shut down and restart powershell and/or consoles
+ first prior to using choco.
+Ensuring Chocolatey commands are on the path
+Ensuring chocolatey.nupkg is in the lib folder</code></pre></div>
+
+<!-- HTML generated using https://hilite.me, modified by me(https://github.com/whitespace-negative) -->
+<div id="inst_winx64"><pre><code><span style="font-weight:1000">Windows(Win10) - Windows Powershell(Administrator)</span>
+
+PS C:\Windows\system32> <span style="color: #f9f1a5">Set-ExecutionPolicy</span> Bypass<span style="color:#767676;"> -Scope</span> <span style="color:#f9f1a5;">Process</span><span style="color:#767676;"> -Force</span><span style>;</span> <span style="color: #cccccc">[System.Net.ServicePointManager]</span><span style>::</span>SecurityProtocol = <span style="color: #cccccc">[System.Net.ServicePointManager]</span><span style>::</span>SecurityProtocol <span style="color: #767676">-bor</span> 3072<span style>;</span> <span style="color:#f9f1a5;">iex</span> ((<span style="color: #f9f1a5">New-Object</span> System.Net.WebClient).DownloadString(<span style="color: #3a96dd">'https://raw.githubusercontent.com/MangDL/MangDL/master/assets/winx64.ps1'</span>))
+Forcing web requests to allow TLS v1.2 (Required for requests to Chocolatey.org)
+Getting latest version of the Chocolatey package for download.
+Not using proxy.
+Getting Chocolatey from https://community.chocolatey.org/api/v2/package/chocolatey/0.11.3.
+<span style="color:#C50F1F;">...</span>
+Chocolatey installed 1/1 packages.
+ See the log for details (C:\ProgramData\chocolatey\logs\chocolatey.log)</code></pre></div>
+
+<!-- HTML generated using https://hilite.me, modified by me(https://github.com/whitespace-negative) -->
+<div id="inst_winx86"><pre><code><span style="font-weight:1000">Windows(Win10) - Windows Powershell(Administrator)</span>
+
+PS C:\Windows\system32> <span style="color: #f9f1a5">Set-ExecutionPolicy</span> Bypass<span style="color:#767676;"> -Scope</span> <span style="color:#f9f1a5;">Process</span><span style="color:#767676;"> -Force</span><span style>;</span> <span style="color: #cccccc">[System.Net.ServicePointManager]</span><span style>::</span>SecurityProtocol = <span style="color: #cccccc">[System.Net.ServicePointManager]</span><span style>::</span>SecurityProtocol <span style="color: #767676">-bor</span> 3072<span style>;</span> <span style="color:#f9f1a5;">iex</span> ((<span style="color: #f9f1a5">New-Object</span> System.Net.WebClient).DownloadString(<span style="color: #3a96dd">'https://raw.githubusercontent.com/MangDL/MangDL/master/assets/winx86.ps1'</span>))
+Forcing web requests to allow TLS v1.2 (Required for requests to Chocolatey.org)
+Getting latest version of the Chocolatey package for download.
+Not using proxy.
+Getting Chocolatey from https://community.chocolatey.org/api/v2/package/chocolatey/0.11.3.
+<span style="color:#C50F1F;">...</span>
+Chocolatey installed 1/1 packages.
+ See the log for details (C:\ProgramData\chocolatey\logs\chocolatey.log).</code></pre></div>
+<script src="prism.js"></script>
+</body>
+</html>

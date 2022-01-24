@@ -1,0 +1,372 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>yamhl.yamhl API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/atom-one-dark.min.css" crossorigin>
+<style></style>
+<style media="screen and (min-width: 700px)"></style>
+<style media="print"></style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+<script src="/script.js"></script>
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>yamhl.yamhl</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/whinee/mangDL/blob/None/yamhl/yamhl.py#L1-L76" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">from os import path
+from pathlib import Path
+from typing import Any, Dict, List
+
+import httpx
+
+from .settings import stg
+from .utils import ddir, srv_tpl
+
+from rich.pretty import pprint
+
+class Constants:
+    pass
+
+YAHML = stg(None, &#34;yamhl.yml&#34;)
+MD_VARS_YML = ddir(YAHML, &#34;md_vars&#34;)
+RMVC = ddir(MD_VARS_YML, &#34;commons&#34;)
+
+RULES = ddir(YAHML, &#34;rules&#34;)
+
+def dd(od: Dict[str, List[str]], *dicts: List[Dict[str, List[str]]]) -&gt; Dict[str, List[str]]:
+    for d in dicts:
+        for a, v in d.items():
+            od[a] = [*(od.get(a, []) or []), *v]
+    return od
+
+def rules_fn(rules: Dict[Any, Any], key: str) -&gt; Dict[str, List[str]]:
+    _rules = ddir(rules, key)
+    return dd({&#34;&#34;: ddir(_rules, &#34;del&#34;, [])}, ddir(_rules, &#34;repl&#34;))
+
+def op_fn(ip, s: str):
+    op = None
+    if (_op:= ip.stem) not in ddir(YAHML, f&#34;{s}_op_exc&#34;, []):
+        op = path.join(YAHML[f&#39;{s}_op&#39;], *ip.parts[1:-1], f&#34;{ddir(YAHML, f&#39;files_conv/{_op}/{s}_op&#39;, _op)}.{s}&#34;)
+    return op
+
+def repl(s: str, repl_dict: Dict[str, List[str]]) -&gt; str:
+    op = s
+    for k, v in repl_dict.items():
+        for i in v:
+            op = op.replace(i, k)
+    return op
+
+for i in [&#34;md&#34;, &#34;html&#34;]:
+    setattr(Constants, f&#34;{i}_rules&#34;, rules_fn(RULES, i))
+
+def main(rmv: Dict[Any, Any]={}):
+    rmv_r = ddir(rmv, &#34;rules&#34;)
+    rmv_mv = ddir(rmv, &#34;md_vars&#34;)
+    for i in [&#34;md&#34;, &#34;html&#34;]:
+        setattr(Constants, f&#34;{i}_repl&#34;, dd(rules_fn(RULES, i), rules_fn(rmv_r, i)))
+    MVC = dict(RMVC, **ddir(rmv_mv, &#34;commons&#34;))
+    for rip in list(Path(f&#39;./{YAHML[&#34;input&#34;]}&#39;).rglob(&#34;*.md&#34;)):
+        md_out, html_out = [op_fn(rip, i) for i in [&#34;md&#34;, &#34;html&#34;]]
+
+        with open(rip, &#34;r&#34;) as ip:
+            md = repl(ip.read(), Constants.md_repl)
+            for k, v in dict(MVC, **ddir(MD_VARS_YML, f&#34;files/{rip.stem}&#34;), **ddir(rmv_mv, f&#34;files/{rip.stem}&#34;)).items():
+                md = md.replace(f&#34;${{{k}}}&#34;, v)
+
+            if md_out:
+                with open(md_out, &#34;w&#34;) as md_out:
+                    md_out.write(md)
+
+            if html_out:
+                with open(html_out, &#34;w&#34;) as html_out:
+                    headers = {&#34;accept&#34;: &#34;application/vnd.github.v3+json&#34;}
+                    data = {&#34;text&#34;: md}
+                    md = str(
+                        httpx.post(&#34;https://api.github.com/markdown&#34;, headers=headers, json=data).content,
+                        encoding=&#34;utf-8&#34;
+                    )
+
+                    pprint(Constants.html_repl)
+
+                    html_out.write(srv_tpl(&#34;html.mako&#34;, content=repl(md, Constants.html_repl)))</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="yamhl.yamhl.dd"><code class="name flex">
+<span>def <span class="ident">dd</span></span>(<span>od: Dict[str, List[str]], *dicts: List[Dict[str, List[str]]]) ‑> Dict[str, List[str]]</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/whinee/mangDL/blob/None/yamhl/yamhl.py#L21-L25" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">def dd(od: Dict[str, List[str]], *dicts: List[Dict[str, List[str]]]) -&gt; Dict[str, List[str]]:
+    for d in dicts:
+        for a, v in d.items():
+            od[a] = [*(od.get(a, []) or []), *v]
+    return od</code></pre>
+</details>
+</dd>
+<dt id="yamhl.yamhl.main"><code class="name flex">
+<span>def <span class="ident">main</span></span>(<span>rmv: Dict[Any, Any] = {})</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/whinee/mangDL/blob/None/yamhl/yamhl.py#L47-L76" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">def main(rmv: Dict[Any, Any]={}):
+    rmv_r = ddir(rmv, &#34;rules&#34;)
+    rmv_mv = ddir(rmv, &#34;md_vars&#34;)
+    for i in [&#34;md&#34;, &#34;html&#34;]:
+        setattr(Constants, f&#34;{i}_repl&#34;, dd(rules_fn(RULES, i), rules_fn(rmv_r, i)))
+    MVC = dict(RMVC, **ddir(rmv_mv, &#34;commons&#34;))
+    for rip in list(Path(f&#39;./{YAHML[&#34;input&#34;]}&#39;).rglob(&#34;*.md&#34;)):
+        md_out, html_out = [op_fn(rip, i) for i in [&#34;md&#34;, &#34;html&#34;]]
+
+        with open(rip, &#34;r&#34;) as ip:
+            md = repl(ip.read(), Constants.md_repl)
+            for k, v in dict(MVC, **ddir(MD_VARS_YML, f&#34;files/{rip.stem}&#34;), **ddir(rmv_mv, f&#34;files/{rip.stem}&#34;)).items():
+                md = md.replace(f&#34;${{{k}}}&#34;, v)
+
+            if md_out:
+                with open(md_out, &#34;w&#34;) as md_out:
+                    md_out.write(md)
+
+            if html_out:
+                with open(html_out, &#34;w&#34;) as html_out:
+                    headers = {&#34;accept&#34;: &#34;application/vnd.github.v3+json&#34;}
+                    data = {&#34;text&#34;: md}
+                    md = str(
+                        httpx.post(&#34;https://api.github.com/markdown&#34;, headers=headers, json=data).content,
+                        encoding=&#34;utf-8&#34;
+                    )
+
+                    pprint(Constants.html_repl)
+
+                    html_out.write(srv_tpl(&#34;html.mako&#34;, content=repl(md, Constants.html_repl)))</code></pre>
+</details>
+</dd>
+<dt id="yamhl.yamhl.op_fn"><code class="name flex">
+<span>def <span class="ident">op_fn</span></span>(<span>ip, s: str)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/whinee/mangDL/blob/None/yamhl/yamhl.py#L31-L35" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">def op_fn(ip, s: str):
+    op = None
+    if (_op:= ip.stem) not in ddir(YAHML, f&#34;{s}_op_exc&#34;, []):
+        op = path.join(YAHML[f&#39;{s}_op&#39;], *ip.parts[1:-1], f&#34;{ddir(YAHML, f&#39;files_conv/{_op}/{s}_op&#39;, _op)}.{s}&#34;)
+    return op</code></pre>
+</details>
+</dd>
+<dt id="yamhl.yamhl.repl"><code class="name flex">
+<span>def <span class="ident">repl</span></span>(<span>s: str, repl_dict: Dict[str, List[str]]) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/whinee/mangDL/blob/None/yamhl/yamhl.py#L37-L42" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">def repl(s: str, repl_dict: Dict[str, List[str]]) -&gt; str:
+    op = s
+    for k, v in repl_dict.items():
+        for i in v:
+            op = op.replace(i, k)
+    return op</code></pre>
+</details>
+</dd>
+<dt id="yamhl.yamhl.rules_fn"><code class="name flex">
+<span>def <span class="ident">rules_fn</span></span>(<span>rules: Dict[Any, Any], key: str) ‑> Dict[str, List[str]]</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/whinee/mangDL/blob/None/yamhl/yamhl.py#L27-L29" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">def rules_fn(rules: Dict[Any, Any], key: str) -&gt; Dict[str, List[str]]:
+    _rules = ddir(rules, key)
+    return dd({&#34;&#34;: ddir(_rules, &#34;del&#34;, [])}, ddir(_rules, &#34;repl&#34;))</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="yamhl.yamhl.Constants"><code class="flex name class">
+<span>class <span class="ident">Constants</span></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/whinee/mangDL/blob/None/yamhl/yamhl.py#L12-L13" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">class Constants:
+    pass</code></pre>
+</details>
+<h3>Class variables</h3>
+<dl>
+<dt id="yamhl.yamhl.Constants.html_rules"><code class="name">var <span class="ident">html_rules</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="yamhl.yamhl.Constants.md_rules"><code class="name">var <span class="ident">md_rules</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>MangDL</h1>
+<form>
+<input id="lunr-search" name="q" placeholder="Search..." aria-label="Search"
+disabled minlength="2">
+</form>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/tingle/0.15.3/tingle.min.css" integrity="sha512-j1u8eUJ4f23xPPxwOrLUPQaCD2dwzNqqmDDcWS4deWsMv2ohLqmXXuP3hU7g8TyzbMSakP/mMqoNBYWj8AEIFg==" crossorigin>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tingle/0.15.3/tingle.min.js" integrity="sha512-plGUER9JkeEWPPqQBE4sdLqBoQug5Ap+BCGMc7bJ8BXkm+VVj6QzkpBz5Yv2yPkkq+cqg9IpkBaGCas6uDbW8g==" crossorigin></script>
+<style>
+.modal-dialog iframe {
+width: 100vw;
+height: calc(100vh - 80px);
+}
+@media screen and (min-width: 700px) {
+.modal-dialog iframe {
+width: 70vw;
+height: 80vh;
+}
+}
+.modal-dialog .tingle-modal-box {
+width: auto;
+background: #0f0f0f;
+}
+.modal-dialog .tingle-modal-box__content {padding: 0;}
+#search-status{
+font-family: Liberation Mono;
+}
+footer{
+font-family: Liberation Mono;
+}
+</style>
+<script>
+const input = document.getElementById('lunr-search');
+input.disabled = false;
+input.form.addEventListener('submit', (ev) => {
+ev.preventDefault();
+const url = new URL(window.location);
+url.searchParams.set('q', input.value);
+history.replaceState({}, null, url.toString());
+search(input.value);
+});
+const query = new URL(window.location).searchParams.get('q');
+if (query)
+search(query);
+function search(query) {
+const url = '../doc-search.html#' + encodeURIComponent(query);
+new tingle.modal({
+cssClass: ['modal-dialog'],
+onClose: () => {
+const url = new URL(window.location);
+url.searchParams.delete('q');
+history.replaceState({}, null, url.toString());
+setTimeout(() => input.focus(), 100);
+}
+}).setContent('<iframe src="' + url + '"></iframe>').open();
+}
+</script>
+<h2>Index</h2>
+<div class="toc">
+<ul>
+<li><a href="/index.html"><strong>Homepage</strong></a></li>
+<li><a href="/installation.html"><strong>Installation</strong></a></li>
+<li><a href="/upgrade.html"><strong>Upgrading</strong></a></li>
+<li>
+<a href="/providers.html"><strong>Providers</strong></a>
+<ul>
+<li><a href="/rejected.html"><strong>Rejected Sites</strong></a></li>
+</ul>
+</li>
+<li><a href="/tou_disc.html"><strong>Terms of Usage & Disclaimer</strong></a></li>
+<li><a href="/docs/index.html"><strong>Documentation</strong></a></li>
+<li><a href="/changelog.html"><strong>Changelog</strong></a></li>
+<li><a href="/license.html"><strong>License</strong></a></li>
+<li><a href="/more.html"><strong>More Apps</strong></a></li>
+<ul>
+</div>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="yamhl" href="index.html">yamhl</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="yamhl.yamhl.dd" href="#yamhl.yamhl.dd">dd</a></code></li>
+<li><code><a title="yamhl.yamhl.main" href="#yamhl.yamhl.main">main</a></code></li>
+<li><code><a title="yamhl.yamhl.op_fn" href="#yamhl.yamhl.op_fn">op_fn</a></code></li>
+<li><code><a title="yamhl.yamhl.repl" href="#yamhl.yamhl.repl">repl</a></code></li>
+<li><code><a title="yamhl.yamhl.rules_fn" href="#yamhl.yamhl.rules_fn">rules_fn</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="yamhl.yamhl.Constants" href="#yamhl.yamhl.Constants">Constants</a></code></h4>
+<ul class="">
+<li><code><a title="yamhl.yamhl.Constants.html_rules" href="#yamhl.yamhl.Constants.html_rules">html_rules</a></code></li>
+<li><code><a title="yamhl.yamhl.Constants.md_rules" href="#yamhl.yamhl.Constants.md_rules">md_rules</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+If you have spotted some errors in this site, do not hesitate to report it <a target="_blank" href="https://github.com/Pirate-Kings/yamhl/issues/new">here</a> or just fix it yourself <a target="_blank" href="https://github.com/Pirate-Kings/yamhl/">here</a>.
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>
