@@ -1,0 +1,55 @@
+input: md
+md_op: docs
+html_op: site
+templates:
+  - md/template/shared
+  - md/template/yahml
+
+pdoc:
+  enabled: true
+  templates:
+    - md/template/shared
+    - md/template/pdoc
+
+files_conv:
+  README:
+    html_op: index
+
+md_op_exc:
+
+html_op_exc:
+
+md_vars:
+  commons:
+    project_name: yamhl
+    repo_name: yamhl
+    site: yamhl.pages.dev
+    user: Pirate-Kings
+    cholder: whinee
+
+  files:
+    README:
+      title: YAMHL
+      desc: Yet Another MD 2 HTML Library
+
+rules:
+  md:
+    del:
+    repl:
+      'src="https://${site}/assets':
+        - 'src="./assets'
+      "src='https://${site}/assets":
+        - "src='./assets"
+      "](https://${site}/assets":
+        - "](./assets"
+  html:
+    del:
+      - '<link href="/github-markdown-css/github-css.css" rel="stylesheet"/>'
+      - "user-content-"
+    repl:
+      '<input type="checkbox" disabled="">':
+        - '[ ]'
+      '<input type="checkbox" disabled="" checked="">':
+        - '[x]'
+      'class="hljs':
+        - 'id="hljs'

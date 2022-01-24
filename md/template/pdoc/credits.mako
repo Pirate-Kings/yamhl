@@ -1,0 +1,1 @@
+If you have spotted some errors in this site, do not hesitate to report it <a target="_blank" href="https://github.com/MangDL/mdl/issues/new">here</a> or at the <a target="_blank" href="https://discord.com/invite/JbAtUxGcJZ">Discord Support Server</a>, or just fix it yourself <a target="_blank" href="https://github.com/MangDL/mdl/">here</a>.
