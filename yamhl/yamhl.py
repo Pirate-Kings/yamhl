@@ -64,7 +64,8 @@ def main(rmv: Dict[Any, Any]={}):
 
         with open(rip, "r") as ip:
             md = repl(ip.read(), Constants.md_repl)
-            for k, v in dict(MVC, **ddir(MD_VARS_YML, f"files/{rip.stem}"), **ddir(rmv_mv, f"files/{rip.stem}")).items():
+            d = dict(MVC, **ddir(MD_VARS_YML, f"files/{rip.stem}"), **ddir(rmv_mv, f"files/{rip.stem}"))
+            for k, v in d.items():
                 md = md.replace(f"${{{k}}}", v)
 
             if md_out:

@@ -24,7 +24,7 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Pirate-Kings/yamhl/blob/dfa4c4d62650112ce412f6f5fde049aa5896f0b3/yamhl/yamhl.py#L1-L83" class="git-link">Browse git</a>
+<a href="https://github.com/Pirate-Kings/yamhl/blob/df79c85491fd7eba1ef9a4480579e2934f555124/yamhl/yamhl.py#L1-L84" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">from os import path
 from pathlib import Path
@@ -92,7 +92,8 @@ def main(rmv: Dict[Any, Any]={}):
 
         with open(rip, &#34;r&#34;) as ip:
             md = repl(ip.read(), Constants.md_repl)
-            for k, v in dict(MVC, **ddir(MD_VARS_YML, f&#34;files/{rip.stem}&#34;), **ddir(rmv_mv, f&#34;files/{rip.stem}&#34;)).items():
+            d = dict(MVC, **ddir(MD_VARS_YML, f&#34;files/{rip.stem}&#34;), **ddir(rmv_mv, f&#34;files/{rip.stem}&#34;))
+            for k, v in d.items():
                 md = md.replace(f&#34;${{{k}}}&#34;, v)
 
             if md_out:
@@ -126,7 +127,7 @@ def main(rmv: Dict[Any, Any]={}):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Pirate-Kings/yamhl/blob/dfa4c4d62650112ce412f6f5fde049aa5896f0b3/yamhl/yamhl.py#L22-L26" class="git-link">Browse git</a>
+<a href="https://github.com/Pirate-Kings/yamhl/blob/df79c85491fd7eba1ef9a4480579e2934f555124/yamhl/yamhl.py#L22-L26" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def dd(od: Dict[str, List[str]], *dicts: List[Dict[str, List[str]]]) -&gt; Dict[str, List[str]]:
     for d in dicts:
@@ -143,7 +144,7 @@ def main(rmv: Dict[Any, Any]={}):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Pirate-Kings/yamhl/blob/dfa4c4d62650112ce412f6f5fde049aa5896f0b3/yamhl/yamhl.py#L48-L83" class="git-link">Browse git</a>
+<a href="https://github.com/Pirate-Kings/yamhl/blob/df79c85491fd7eba1ef9a4480579e2934f555124/yamhl/yamhl.py#L48-L84" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def main(rmv: Dict[Any, Any]={}):
     if ddir(PDOC, &#34;enabled&#34;, False):
@@ -164,7 +165,8 @@ def main(rmv: Dict[Any, Any]={}):
 
         with open(rip, &#34;r&#34;) as ip:
             md = repl(ip.read(), Constants.md_repl)
-            for k, v in dict(MVC, **ddir(MD_VARS_YML, f&#34;files/{rip.stem}&#34;), **ddir(rmv_mv, f&#34;files/{rip.stem}&#34;)).items():
+            d = dict(MVC, **ddir(MD_VARS_YML, f&#34;files/{rip.stem}&#34;), **ddir(rmv_mv, f&#34;files/{rip.stem}&#34;))
+            for k, v in d.items():
                 md = md.replace(f&#34;${{{k}}}&#34;, v)
 
             if md_out:
@@ -191,7 +193,7 @@ def main(rmv: Dict[Any, Any]={}):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Pirate-Kings/yamhl/blob/dfa4c4d62650112ce412f6f5fde049aa5896f0b3/yamhl/yamhl.py#L32-L36" class="git-link">Browse git</a>
+<a href="https://github.com/Pirate-Kings/yamhl/blob/df79c85491fd7eba1ef9a4480579e2934f555124/yamhl/yamhl.py#L32-L36" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def op_fn(ip, s: str):
     op = None
@@ -208,7 +210,7 @@ def main(rmv: Dict[Any, Any]={}):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Pirate-Kings/yamhl/blob/dfa4c4d62650112ce412f6f5fde049aa5896f0b3/yamhl/yamhl.py#L38-L43" class="git-link">Browse git</a>
+<a href="https://github.com/Pirate-Kings/yamhl/blob/df79c85491fd7eba1ef9a4480579e2934f555124/yamhl/yamhl.py#L38-L43" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def repl(s: str, repl_dict: Dict[str, List[str]]) -&gt; str:
     op = s
@@ -226,7 +228,7 @@ def main(rmv: Dict[Any, Any]={}):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Pirate-Kings/yamhl/blob/dfa4c4d62650112ce412f6f5fde049aa5896f0b3/yamhl/yamhl.py#L28-L30" class="git-link">Browse git</a>
+<a href="https://github.com/Pirate-Kings/yamhl/blob/df79c85491fd7eba1ef9a4480579e2934f555124/yamhl/yamhl.py#L28-L30" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def rules_fn(rules: Dict[Any, Any], key: str) -&gt; Dict[str, List[str]]:
     _rules = ddir(rules, key)
@@ -246,7 +248,7 @@ def main(rmv: Dict[Any, Any]={}):
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Pirate-Kings/yamhl/blob/dfa4c4d62650112ce412f6f5fde049aa5896f0b3/yamhl/yamhl.py#L12-L13" class="git-link">Browse git</a>
+<a href="https://github.com/Pirate-Kings/yamhl/blob/df79c85491fd7eba1ef9a4480579e2934f555124/yamhl/yamhl.py#L12-L13" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class Constants:
     pass</code></pre>
@@ -369,9 +371,9 @@ setTimeout(() => input.focus(), 100);
 </nav>
 </main>
 <footer id="footer">
-If you have spotted some errors in this site, do not hesitate to report it <a target="_blank" href="https://github.com/MangDL/mdl/issues/new">here</a> or at the <a target="_blank" href="https://discord.com/invite/JbAtUxGcJZ">Discord Support Server</a>, or just fix it yourself <a target="_blank" href="https://github.com/MangDL/mdl/">here</a>.
+If you have spotted some errors in this site, do not hesitate to report it <a target="_blank" href="https://github.com/Pirate-Kings/yamhl/issues/new">here</a> or just fix it yourself <a target="_blank" href="https://github.com/Pirate-Kings/yamhl/">here</a>.
 <p>Generated with
-<a href="https://yamhl.pages.dev" title="yamhl: Yet Another Markdown 2 HTML Library"><cite>yamhl</cite> 0.0.0.0-alpha.1</a> and
+<a href="https://yamhl.pages.dev" title="yamhl: Yet Another Markdown 2 HTML Library"><cite>yamhl</cite> 0.0.0.0-alpha.2</a> and
 <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
 </footer>
 </body>
