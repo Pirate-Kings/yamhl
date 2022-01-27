@@ -1,3 +1,4 @@
 httpx
-pdoc
+mako
+pdoc3
 pyyaml

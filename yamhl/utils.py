@@ -3,15 +3,10 @@ from typing import Any, Dict
 from mako.lookup import TemplateLookup
 
 from .settings import stg
+import shlex
+from subprocess import call
 
-
-LOOKUPS_DICT = {"templates": ["templates", "yamhl.yml"], "pdoc": ["pdoc/templates", "yamhl.yml"]}
-
-class Lookups:
-    pass
-
-for k, v in LOOKUPS_DICT.items():
-    setattr(Lookups, k, TemplateLookup(directories=stg(*v) or []))
+YAHML = stg(None, "yamhl.yml")
 
 def ddir(d: Dict[Any, Any], dir: str, de: Any={}) -> Any:
     """
@@ -35,5 +30,10 @@ def ddir(d: Dict[Any, Any], dir: str, de: Any={}) -> Any:
             break
     return op or de
 
-def srv_tpl(tn: str, ln: str="templates", **kwargs: Dict[str, Any]):
-    return getattr(Lookups, ln).get_template(tn).render(**kwargs)
+LOOKUPS = TemplateLookup(directories=ddir(YAHML, "templates") or [])
+
+def srv_tpl(tn: str, **kwargs: Dict[str, Any]):
+    return LOOKUPS.get_template(tn).render(**kwargs)
+
+def run(s: str):
+    call(shlex.split(s))

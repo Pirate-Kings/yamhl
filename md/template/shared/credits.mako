@@ -1,1 +1,0 @@
-If you have spotted some errors in this site, do not hesitate to report it <a target="_blank" href="https://github.com/Pirate-Kings/yamhl/issues/new">here</a> or just fix it yourself <a target="_blank" href="https://github.com/Pirate-Kings/yamhl/">here</a>.

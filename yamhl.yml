@@ -2,22 +2,22 @@ input: md
 md_op: docs
 html_op: site
 templates:
-  - md/template/shared
-  - md/template/yahml
+  - template
 
 pdoc:
   enabled: true
-  templates:
-    - md/template/shared
-    - md/template/pdoc
-
-files_conv:
-  README:
-    html_op: index
+  project: yamhl
+  templates: template
+  op: site
+  command: pdoc {project} -f --html --close-stdin --template-dir {templates} -o {op}
 
 md_op_exc:
 
 html_op_exc:
+
+files_conv:
+  README:
+    html_op: index
 
 md_vars:
   commons:
@@ -53,3 +53,10 @@ rules:
         - '[x]'
       'class="hljs':
         - 'id="hljs'
+
+toc:
+  title: Index
+  links:
+    Homepage: /
+    Example Usage: /examples
+    Documentation: /docs/

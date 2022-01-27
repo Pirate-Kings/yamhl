@@ -24,7 +24,7 @@ def readcfg(file: str) -> Any:
         return d[file.split(".")[-1]](f)
 
 
-def stg(stg: str, file: str = path.join(dn(ap(__file__)), "stg.json")) -> Any:
+def stg(stg: str, file: str=None) -> Any:
     """Retrieve dictionary value of the config file with the given file name
     using recursive indexing with a string.
     ex.:
@@ -38,14 +38,14 @@ def stg(stg: str, file: str = path.join(dn(ap(__file__)), "stg.json")) -> Any:
     Returns:
         Any: The retrieved value.
     """
-    op = readcfg(file)
+    op = readcfg(file or path.join(dn(ap(__file__)), "stg.json"))
     if stg is not None:
         for a in stg.split("/"):
             op = op[a]
     return op
 
 
-def wr_stg(stg: str, value: Any, file: str = path.join(dn(ap(__file__)), "stg.json")) -> None:
+def wr_stg(stg: str, value: Any, file: str=None) -> None:
     """Rewrite dictionary value of the config file with the given file name
     using recursive indexing with a string.
     ex.:
@@ -61,7 +61,7 @@ def wr_stg(stg: str, value: Any, file: str = path.join(dn(ap(__file__)), "stg.js
     Raises:
         FileNotFoundError: Raised if the file is not found.
     """
-    stg_dict = readcfg(file)
+    stg_dict = readcfg(file or path.join(dn(ap(__file__)), "stg.json"))
 
     def modify(stg: str, value: Any, stg_dict: Dict[Any, Any]):
         path_ls = stg.split("/")

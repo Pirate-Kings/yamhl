@@ -727,25 +727,6 @@ pre {
     opacity: 0.01;
 }
 
-ul li img {
-    display: block;
-    max-width: 50%;
-}
-
-
-@media (max-width: 1000px) {
-    ul li img {
-        display: block;
-        max-width: 75%;
-    }
-}
-
-@media (max-width: 500px) {
-    ul li img {
-        display: block;
-        max-width: 100%;
-    }
-}
 
 kbd {
     display: inline-block;
@@ -1701,4 +1682,73 @@ pre tt {
 
 ::-webkit-calendar-picker-indicator {
     filter: invert(50%);
+}
+
+.homelink {
+    display: block;
+    font-size: 2em;
+    font-weight: bold;
+}
+
+ul li img {
+    display: block;
+    max-width: 50%;
+}
+
+#logo-div {
+    display: grid;
+    grid-template-columns: minmax(20%, max-content) auto;
+    align-items: center;
+}
+
+#logo-div h1 {
+    margin: 0 0 0 0;
+    padding: 0 0 0 0;
+    margin-left: .5em;
+}
+
+#logo-div div {
+    align-content: center;
+}
+
+@media (max-width: 300px) {
+    #logo-div {
+        grid-template-columns: 1fr;
+    }
+    #logo-div h1 {
+        margin: revert-layer;
+        padding: revert-layer;
+    }
+    .logo {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 500px) {
+    ul li img {
+        display: block;
+        max-width: 100%;
+    }
+}
+
+
+@media (min-width: 700px) and (max-width: 1000px) {
+    #logo-div {
+        grid-template-columns: 1fr;
+    }
+    #logo-div h1 {
+        margin: revert-layer;
+        padding: revert-layer;
+    }
+    .logo {
+        max-width: 100%;
+    }
+}
+
+
+@media (max-width: 1000px) {
+    ul li img {
+        display: block;
+        max-width: 75%;
+    }
 }

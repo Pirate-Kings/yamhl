@@ -44,7 +44,7 @@ I wanted to create a site just from markdowns.
 
 ```python
 def main():
-    yamhl.main(RULES_MDV)
+    yamhl.main()
 
 if __name__ == "__main__":
     main()

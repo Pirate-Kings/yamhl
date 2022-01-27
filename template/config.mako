@@ -24,7 +24,7 @@
     #git_link_template = 'https://gitlab.com/USER/PROJECT/blob/{commit}/{path}#L{start_line}-L{end_line}'
     #git_link_template = 'https://bitbucket.org/USER/PROJECT/src/{commit}/{path}#lines-{start_line}:{end_line}'
     #git_link_template = 'https://CGIT_HOSTNAME/PROJECT/tree/{path}?id={commit}#n{start-line}'
-    git_link_template = 'https://github.com/whinee/mangDL/blob/{commit}/{path}#L{start_line}-L{end_line}'
+    git_link_template = 'https://github.com/Pirate-Kings/yamhl/blob/{commit}/{path}#L{start_line}-L{end_line}'
 
     # A prefix to use for every HTML hyperlink in the generated documentation.
     # No prefix results in all links being relative.
